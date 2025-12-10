@@ -62,34 +62,51 @@ def encrypt(txt):
     return encrypted_txt+pad
 
 def decrypt(code):
+    #Remove whitespace in encrypted code
     code = code.strip()
+    
+    #Split code into encrypted text and pad
     encrypted_txt = code[:len(code)//2]
     pad = code[len(code)//2:]
+    
+    #Convert to binary 
     bin_encrypted_txt = b64_to_bin(encrypted_txt)
     bin_pad = b64_to_bin(pad)
-    
+
+    #Use pad to decrypt text
     bin_txt = encrypt_bin(bin_encrypted_txt,bin_pad)
 
+    #Convert binary to unicode and return original text
     txt = bin_to_unicode(bin_txt)
     return txt
 
-def main():
-    
-    while True:
+
+while True:
         choice = input("Would you like to \nEncrypt (1)\nDecrypt (2)\n")
         if choice == '1': #Encrypt
             txt = input("Enter your message:\n")
-            print("Encrypted text:\n",encrypt(txt))
-            input()
+            print("\nEncrypted text:\n", encrypt(txt))
+            input("\nPress ENTER to continue...")
             
         elif choice == '2': #Decrypt
             code = input("Enter your code:\n")
-            print(decrypt(code))
-            input()
-        else:
-            input("Invalid \nPress ENTER")
-            pass
+
+            try:
+                print("\nDecrypted text:", decrypt(code))
+            except:
+                print("Your code is invalid!")
+            input("\nPress ENTER to continue...")
             
+        elif choice == '3':
+            break
+        elif choice == '':
+            pass 
+            
+        else:
+            print("Invalid choice. Please enter 1, 2, or 3.")
+            input("\nPress ENTER to continue...")
+            
+    
     
 if __name__ == "__main__":
     main()
